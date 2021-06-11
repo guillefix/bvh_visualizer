@@ -26,6 +26,7 @@ class Loader {
   }
 
   loadBVH(url, cb) {
+    console.log("loading bvh", url)
     new THREE.BVHLoader().load(url, cb, this.onProgress, this.onError);
   }
 

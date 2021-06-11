@@ -33,7 +33,8 @@ module.exports = {
 
     path: resolve(__dirname, 'dist/'),
 
-    publicPath: '/', // necessary for HMR to know where to load the hot update chunks
+    //publicPath: '/', // necessary for HMR to know where to load the hot update chunks
+    publicPath: '/bvh_visualizer/', // necessary for HMR to know where to load the hot update chunks
   },
 
   devtool: 'inline-source-map',

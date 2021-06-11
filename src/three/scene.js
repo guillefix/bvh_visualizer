@@ -261,6 +261,10 @@ class Scene {
     }
   }
 
+  getCamera() {
+    return this.scene.getCamera();
+  }
+
   toggleRotation() {
     this.controls.autoRotate = !this.controls.autoRotate;
   }

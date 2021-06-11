@@ -27,6 +27,7 @@ THREE.SceneLoader.prototype = {
 
   load(url, onLoad, onProgress, onError) {
     const scope = this;
+    // console.log("this", this);
 
     // var loader = new THREE.FileLoader( scope.manager );
     // loader.load( url, function ( text ) {
@@ -714,7 +715,6 @@ THREE.SceneLoader.prototype = {
       } else {
         var fullUrl = get_url(textureJSON.url, data.urlBaseType);
         var textureCallback = generateTextureCallback(1);
-
         var loader = THREE.Loader.Handlers.get(fullUrl);
 
         if (loader !== null) {

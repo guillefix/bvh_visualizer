@@ -41,6 +41,8 @@ class Performer {
     this.delay = 0;
     this.origScale = 1;
     this.scale = 1;
+    this.skeleton_scale = 1.7;
+    this.skeleton_y_shift = 170;
     
     this.styleInt = null;
     this.modelGeos = {};
@@ -623,6 +625,7 @@ class Performer {
             object.rotation.x = 0;
             switch (style) {
               default:
+                console.log(object.geometry);
                 break;
               case 'spheres':
                 var scale = (0.075*6) * intensity;// Common.mapRange(intensity, 1, 10, 0.01, 3)
@@ -1148,13 +1151,24 @@ class Performer {
         );
       } else if (this.getPerformer().meshes[jointName]) {
         // console.log(this.getPerformer().meshes[jointName]);
-        this.getPerformer().meshes[jointName].position.set(
-          data[i].position.x,
-          data[i].position.y,
-          data[i].position.z,
-        );
+          // console.log(jointName);
+        if (jointName === "robot_hips") {
+          // console.log(data[i].position.y);
+          this.getPerformer().meshes[jointName].position.set(
+            data[i].position.x*this.skeleton_scale,
+            data[i].position.y*this.skeleton_scale - this.skeleton_y_shift,
+            data[i].position.z*this.skeleton_scale,
+          );
+        } else {
+          this.getPerformer().meshes[jointName].position.set(
+            data[i].position.x*this.skeleton_scale,
+            data[i].position.y*this.skeleton_scale,
+            data[i].position.z*this.skeleton_scale,
+          );
+        }
 
         this.getPerformer().meshes[jointName].quaternion.copy(data[i].quaternion);
+        // this.getPerformer().meshes[jointName].scale.set(0.7,0.7,0.7);
       }
     }
   }

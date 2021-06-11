@@ -25,7 +25,7 @@ import ARMenu from '../menus/ARMenu';
 import RenderStyleMenu from '../menus/RenderStyleMenu';
 
 import KeyboardHelpModal from './../modals/KeyboardHelpModal';
-import BVHChooserModal from '../modals/BVHChooserModal';
+import { BasicBVHChooserModal, BVHChooserModal} from '../modals/BVHChooserModal';
 
 import Scene from './../../three/scene';
 import InputManager from './../../inputs';
@@ -34,6 +34,8 @@ import OutputManager from './../../outputs';
 import Performers from './../../performers/Performers';
 
 import BVHPlayer from './../../performers/BVHPlayer';
+
+import { addAudio } from './../../audio/'
 
 require('./../../styles/colors.css');
 require('./../../styles/fonts.css');
@@ -81,6 +83,7 @@ class Main extends React.Component {
       this.state.defaults,
       this.sceneInit.bind(this),
     );
+
   }
 
   setRenderStyle(id) {
@@ -222,6 +225,7 @@ class Main extends React.Component {
       this.updatePerformers.bind(this),
     );
     this.BVHPlayers.push(bvhPlayer);
+    addAudio(this.state.scene.camera,this.state.scene.scene)
     return bvhPlayer;
   }
 
@@ -658,7 +662,7 @@ class Main extends React.Component {
             closeKeyboardModal={this.closeKeyboardModal.bind(this)}
             keyboardList={(this.state.inputManger) ? this.state.inputManger.inputs.keyboard : {}}
           />
-          <BVHChooserModal
+          <BasicBVHChooserModal
             performers={this.state.performers}
             bvhFiles={this.state.bvhFiles}
             show={this.state.bvhChooserModal}
@@ -666,6 +670,14 @@ class Main extends React.Component {
             rawBvhUpload={this.rawBvhUpload.bind(this)}
             urlBvhUpload={this.urlBvhUpload.bind(this)}
           />
+          {/* <BVHChooserModal
+            performers={this.state.performers}
+            bvhFiles={this.state.bvhFiles}
+            show={this.state.bvhChooserModal}
+            closeBVHChooser={this.closeBVHChooser.bind(this)}
+            rawBvhUpload={this.rawBvhUpload.bind(this)}
+            urlBvhUpload={this.urlBvhUpload.bind(this)}
+          /> */}
         </Row>
       </Grid>
     );

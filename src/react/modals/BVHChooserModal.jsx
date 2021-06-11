@@ -16,7 +16,7 @@ import List from 'react-list-select';
 
 import Common from '../../util/Common';
 
-class BVHChooserModal extends React.Component {
+export class BVHChooserModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,9 +78,20 @@ class BVHChooserModal extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.setState(prevState => ({
+      file: "./animations/bvh/Parov_Stelar_-_Catgroove_TSC_-_Forsythe-twqM56f_cV.bvh",
+      filetype: 'url',
+      selected: [0],
+    }), () => {
+      this.loadFile()
+    });
+  }
+
   // select file from list
   fileSelected(number) {
     const f = this.props.bvhFiles[number];
+    console.log(f)
     this.setState(prevState => ({
       file: f,
       filetype: 'url',
@@ -162,4 +173,104 @@ class BVHChooserModal extends React.Component {
   }
 }
 
-module.exports = BVHChooserModal;
+export class BasicBVHChooserModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      files: [],
+      file: null,
+      filetype: null,
+      selected: [],
+      disabled: [],
+    };
+  }
+
+  // only update if something changed
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.forceUpdate == true) {
+      this.setState({ forceUpdate: false });
+      return true;
+    }
+
+    if (this.props && this.state) {
+      if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+        this.props = nextProps;
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  // read dropped file with the FileReader API (no server)
+  onDrop(acceptedFiles) {
+    this.setState({
+      files: acceptedFiles,
+    });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({
+        selected: [],
+        file: reader.result,
+        filetype: 'raw',
+      });
+    };
+    reader.onabort = () => console.log('file reading was aborted');
+    reader.onerror = () => console.log('file reading has failed');
+
+    reader.readAsBinaryString(acceptedFiles[0]);
+  }
+
+  // once new file is dectect, load bvh for playback
+  loadFile() {
+    switch(this.state.filetype) {
+      default:
+      case 'raw':
+        this.props.rawBvhUpload(this.state.file, true);
+        break;
+      case 'url':
+        this.props.urlBvhUpload(this.state.file, true);
+        break;
+    }
+  }
+
+  loadDefault() {
+    this.setState(prevState => ({
+      file: "https://metagen.storage.googleapis.com/generated/stelar.bvh",
+      filetype: 'url',
+      selected: [0],
+    }), () => {
+      this.loadFile()
+    });
+  }
+
+  render() {
+    return (
+      <Modal backdrop={(this.props.performers.length < 1) ? true : true} show={this.props.show} onHide={this.props.closeBVHChooser}>
+        <Modal.Header
+          closeButton={(this.props.performers.length < 1) ? true : true}
+          className="chooserHeader">
+          <Modal.Title>
+            <span>Welcome to</span>
+            <div className="modal-image">
+              <img alt="OP Logo" height="100%" width="auto" src={'images/op_logo_lockup.png'} />
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <Button
+            className={"BVHUploadButton"}
+            // title={(this.state.file === null) ? 'Please Select File' : 'Click to Load Default File'}
+            onClick={this.loadDefault.bind(this)}
+            bsStyle="primary"
+          >
+            Load File
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
+
+// module.exports = BVHChooserModal;
