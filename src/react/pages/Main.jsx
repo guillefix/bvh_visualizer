@@ -1,6 +1,6 @@
 /**
  * @author Travis Bennett
- * @email 
+ * @email
  * @create date 2018-08-26 08:00:36
  * @modify date 2018-08-26 08:00:36
  * @desc [This is where the magic happens. The main React class where all things are initialized.]
@@ -35,7 +35,7 @@ import Performers from './../../performers/Performers';
 
 import BVHPlayer from './../../performers/BVHPlayer';
 
-import { addAudio } from './../../audio/'
+import { addAudioListener } from './../../audio/'
 
 require('./../../styles/colors.css');
 require('./../../styles/fonts.css');
@@ -69,7 +69,7 @@ class Main extends React.Component {
       inputManger: new InputManager(prevState.inputs, prevState.scene, this),
       outputManger: new OutputManager(prevState.outputs, prevState.scene, this),
     }));
-    
+
 
     this.performers = new Performers(this.state.inputManger, this.state.outputManger);
     window.prevMaterial = this.performers.prevMaterial;
@@ -215,23 +215,29 @@ class Main extends React.Component {
     }
   }
 
-  
+
 
   addBVHPerformer(modelPaths, autoplay) {
+    console.log("modelPaths")
+    console.log(modelPaths)
     const bvhPlayer = new BVHPlayer(
       modelPaths,
+      modelPaths+".mp3",
+      this.state.scene,
       this.state.scene.sceneGroup,
       autoplay,
       this.updatePerformers.bind(this),
     );
     this.BVHPlayers.push(bvhPlayer);
-    addAudio(this.state.scene.camera,this.state.scene.scene)
+    // addAudioListener(this.state.scene.camera,this.state.scene.scene)
     return bvhPlayer;
   }
 
   rawBvhUpload(result, autoplay) {
     const bvhPlayer = new BVHPlayer(
       result,
+      null,
+      this.state.scene,
       this.state.scene.sceneGroup,
       autoplay,
       this.updatePerformers.bind(this),
@@ -424,7 +430,7 @@ class Main extends React.Component {
     performer.setFirstPersoned(true);
     this.clearFollowedPeformer();
     this.clearSnorriedPeformer();
-    
+
     this.state.inputManger.firstPerson(performer);
 
     this.setState({
@@ -603,12 +609,12 @@ class Main extends React.Component {
                   selectFirstPersonedPerformer={this.selectFirstPersonedPerformer.bind(this)}
                   firstPersonPerformer={this.firstPersonPerformer.bind(this)}
                   firstPersonedPerformer={this.state.firstPersonedPerformer}
-                  
+
                   flyTop={(this.state.inputManger) ? this.state.inputManger.flyTop.bind(this.state.inputManger) : null}
-                  
+
                   firstPerson={(this.state.inputManger) ? this.state.inputManger.firstPerson.bind(this.state.inputManger) : null}
                   snorryCam={(this.state.inputManger) ? this.state.inputManger.snorryCam.bind(this.state.inputManger) : null}
-                  
+
                   cutClose={(this.state.inputManger) ? this.state.inputManger.cutClose.bind(this.state.inputManger) : null}
                   cutThreeQ={(this.state.inputManger) ? this.state.inputManger.cutThreeQ.bind(this.state.inputManger, 0) : null}
                   cutMedium={(this.state.inputManger) ? this.state.inputManger.cutMedium.bind(this.state.inputManger) : null}

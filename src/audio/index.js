@@ -13,8 +13,32 @@
 //   }
 // }
 
-export function addAudio(camera, scene) {
-    console.log("Adding audio");
+export function addAudio(object, camera, audioUrl, callbak) {
+    console.log("adding audio");
+    console.log(audioUrl);
+// create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
+
+// create the PositionalAudio object (passing in the listener)
+    const sound = new THREE.PositionalAudio( listener );
+
+// load a sound and set it as the PositionalAudio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load(audioUrl, function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setRefDistance( 20 );
+        // if (play) sound.play();
+        callbak();
+    });
+
+// finally add the sound to the mesh
+    object.add( sound );
+    return sound;
+}
+
+export function addAudioListener(camera, scene) {
+    console.log("Adding audio listener");
         // instantiate a listener
     const audioListener = new THREE.AudioListener();
 

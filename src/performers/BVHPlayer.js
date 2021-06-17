@@ -8,12 +8,15 @@ require('three/examples/js/loaders/BVHLoader.js');
 
 
 import Common from './../util/Common';
+import { addAudio } from '../audio';
 
 class BVHPlayer {
-  constructor(content, parent, autoplay, callback) {
+  constructor(content, audioUrl, scene, parent, autoplay, callback) {
     this.content = content;
+    this.audioUrl = audioUrl;
 
     this.parent = parent;
+    this.scene = scene;
     this.callback = callback;
 
     this.skeletalTranslator = new SkeletalTranslator();
@@ -23,6 +26,8 @@ class BVHPlayer {
     this.autoplay = autoplay;
     this.playing = false;
     this.looping = false;
+
+    this.audio = null;
 
     this.clock = new THREE.Clock();
 
@@ -50,20 +55,25 @@ class BVHPlayer {
   play() {
     if (this.mixer.clipAction(this.clip).setEffectiveWeight(1.0).paused == false) {
       this.mixer.clipAction(this.clip).setEffectiveWeight(1.0).play();
+      if (typeof(this.audio) !== "undefined" && !this.audio.isPlaying) this.audio.play();
+      // this.audio.play();
       this.playing = true;
     } else {
       this.mixer.clipAction(this.clip).setEffectiveWeight(1.0).paused = false;
+      if (typeof(this.audio) !== "undefined" && !this.audio.isPlaying) this.audio.play();
       this.playing = false;
     }
   }
 
   pause() {
     this.mixer.clipAction(this.clip).setEffectiveWeight(1.0).paused = true;
+    if (typeof(this.audio) !== "undefined" && this.audio.isPlaying) this.audio.pause();
     this.playing = false;
   }
 
   stop() {
     this.mixer.clipAction(this.clip).setEffectiveWeight(1.0).stop();
+    if (typeof(this.audio) !== "undefined" && this.audio.isPlaying) this.audio.stop();
     this.playing = false;
   }
 
@@ -78,7 +88,7 @@ class BVHPlayer {
   }
 
   getPlay() {
-    return this.playing;
+    return this.playing && (typeof(this.sound) !== "undefined" ? this.sound.isPlaying : true);
   }
 
   getLoop() {
@@ -88,8 +98,10 @@ class BVHPlayer {
   loadBVH(bvhFile) {
     if (!this.loading) {
       this.loading = true;
-      this.loader.loadBVH(bvhFile, (result) => {
-        this.skeletalTranslator.buildBVHAnimation(result, this.animate.bind(this));
+      this.audio = addAudio(this.parent,this.scene.camera,this.audioUrl, () => {
+        this.loader.loadBVH(bvhFile, (result) => {
+          this.skeletalTranslator.buildBVHAnimation(result, this.animate.bind(this));
+        });
       });
     }
   }
@@ -121,7 +133,10 @@ class BVHPlayer {
     this.mixer = mixer;
     this.clip = clip;
 
+    console.log(this.audio);
+    this.noLoop();
     this.play();
+    this.audio.play();
     if (!this.autoplay) {
       this.stop();
     }
@@ -147,6 +162,10 @@ class BVHPlayer {
         });
       }
     }
+    // if (this.playing && !this.getPlay()) {
+    //   this.stop();
+    //   this.play();
+    // }
   }
 }
 

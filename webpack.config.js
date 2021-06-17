@@ -44,7 +44,8 @@ module.exports = {
 
     contentBase: resolve(__dirname, 'dist/'), // match the output path
 
-    publicPath: '/', // match the output `publicPath`
+    // publicPath: '/', // match the output `publicPath`
+    publicPath: '/bvh_visualizer', // match the output `publicPath`
 
     host: '0.0.0.0', // work on any protocol, IP, etc
 

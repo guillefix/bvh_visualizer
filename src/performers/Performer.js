@@ -1,6 +1,6 @@
 /**
  * @author Travis Bennett
- * @email 
+ * @email
  * @create date 2018-09-02 10:45:28
  * @modify date 2018-09-02 10:45:28
  * @desc [description]
@@ -28,7 +28,7 @@ class Performer {
     this.outputManager = outputManager;
 
     this.skeletalTranslator = new SkeletalTranslator();
-    
+
     this.actions = actions;
 
     this.wireframe = options.wireframe;
@@ -43,7 +43,7 @@ class Performer {
     this.scale = 1;
     this.skeleton_scale = 1.7;
     this.skeleton_y_shift = 170;
-    
+
     this.styleInt = null;
     this.modelGeos = {};
     this.colladaScenes = {};
@@ -58,17 +58,17 @@ class Performer {
     this.name = 'Performer ' + performerId;
 
     this.loader = new FileLoader();
-    
+
     (options.offset == null) ? this.offset = new THREE.Vector3(0, 0, 0) : this.offset = options.offset;
     this.rotation = new THREE.Euler(0, 0, 0);
-    
+
     if (this.type === 'clone_bvh' || this.type === 'clone_perceptionNeuron' || this.type === 'clone_poseNet') {
       if (options.offset == null) {
         this.offset = new THREE.Vector3((parseInt(performerId) - 1), 0, 0);
       }
       this.name = 'Clone ' + (parseInt(performerId) - 1);
     }
-    
+
     this.prefix = 'robot_';
 
     this.materialName = options.material;
@@ -81,13 +81,13 @@ class Performer {
     this.styleId = this.styles.indexOf(options.style);
     this.style = options.style;
     this.intensity = options.intensity;
-    
+
     this.displayType = { value: 'bvhMeshGroup', label: 'Mesh Group' };
     this.displayTypes = [
       { value: 'bvhMeshGroup', label: 'Mesh Group' },
       // { value: 'abstractLines', label: 'Abstract Lines' },
       // { value: 'stickFigure', label: 'Stick Figure' },
-      
+
       // { value: 'riggedMesh', label: 'Rigged Model' },
     ];
 
@@ -267,14 +267,14 @@ class Performer {
 
   loadSceneBody(source, filename, hide, size, style, intensity) {
     this.prefix = 'robot_';
-    
+
     this.loader.loadScene(filename, {}, (result) => {
       result.scene.visible = false;
       // console.log(result.scene);
       this.setScene(result.scene);
-      
+
       this.getScene().scale.set(size, size, size);
-      
+
       this.setPerformer(this.parseBVHGroup(source, hide, style, intensity));
       const s = this.getScene();
       s.position.copy(this.getOffset().clone());
@@ -298,20 +298,20 @@ class Performer {
     var indices = [];
     var positions = [];
     var colors = [];
-    
+
     positions.push( 0, 0, 0 );
     colors.push( Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5, 1 );
     indices.push( 0, 0 + 1 );
     positions.push( 10, 0, 0 );
     colors.push( Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5, 1 );
     indices.push( 1, 1 + 1 );
-    
+
     geometry.setIndex( indices );
     geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
     geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
     geometry.computeBoundingSphere();
     var mesh = new THREE.LineSegments( geometry, material );
-    
+
     // this.setScene(mesh);
     // this.parent.add(mesh);
 
@@ -584,7 +584,7 @@ class Performer {
             if (meshes[object.name.toLowerCase()] == undefined) {
               meshes[object.name.toLowerCase()] = object;
             }
-            
+
             if (_.some(hide, el => _.includes(object.name.toLowerCase(), el))) {
               object.visible = false;
             } else {
@@ -625,7 +625,7 @@ class Performer {
             object.rotation.x = 0;
             switch (style) {
               default:
-                console.log(object.geometry);
+                // console.log(object.geometry);
                 break;
               case 'spheres':
                 var scale = (0.075*6) * intensity;// Common.mapRange(intensity, 1, 10, 0.01, 3)
@@ -818,7 +818,7 @@ class Performer {
 
   resetOffset() {
     this.offset = new THREE.Vector3();
-    
+
     const s = this.getScene();
     s.position.copy(new THREE.Vector3());
   }
@@ -829,7 +829,7 @@ class Performer {
 
   setOffset(val) {
     this.offset = val.clone();
-    
+
     const s = this.getScene();
     s.position.copy(val.clone());
   }
@@ -848,20 +848,20 @@ class Performer {
 
   setPosition(val) {
     this.offset = new THREE.Vector3();
-    
+
     const s = this.getScene();
     s.position.copy(val.clone());
   }
 
   resetPosition() {
     this.offset = new THREE.Vector3();
-    
+
     const s = this.getScene();
     s.position.set(0, 0, 0);
   }
 
   setScale(val) {
-    this.scale = this.origScale + val;  
+    this.scale = this.origScale + val;
     const s = this.getScene();
     s.scale.set(this.scale, this.scale, this.scale)
   }
@@ -907,7 +907,7 @@ class Performer {
 
   randomizeAll(switchTime) {
     // var parts = ['head', 'leftshoulder', 'rightshoulder', 'leftupleg',  'rightupleg'];
-    
+
     _.each(this.skeletalTranslator.bvhKeys, (part) => {
       this.scalePart(part, Common.mapRange(Math.random(), 0, 1, 0.25, 3), switchTime);
     });
@@ -1061,7 +1061,7 @@ class Performer {
 
   calculateDistances(data) {
     this.head = new THREE.Vector3();
-    this.head.set(  
+    this.head.set(
       _.filter(data, ['name', 'head'])[0].position.x,
       _.filter(data, ['name', 'head'])[0].position.y,
       _.filter(data, ['name', 'head'])[0].position.z,
@@ -1086,7 +1086,7 @@ class Performer {
       _.filter(data, ['name', 'leftfoot'])[0].position.y,
       _.filter(data, ['name', 'leftfoot'])[0].position.z,
     );
-    
+
     this.rightfoot = new THREE.Vector3();
     this.rightfoot.set(
       _.filter(data, ['name', 'rightfoot'])[0].position.x,
@@ -1133,7 +1133,7 @@ class Performer {
         let size = 1 / this.modelShrink;
         this.origScale = size;
 
-        console.log('Performer data source: ', this.type);
+        // console.log('Performer data source: ', this.type);
         switch (this.type) {
           case 'bvh':
           case 'clone_bvh':

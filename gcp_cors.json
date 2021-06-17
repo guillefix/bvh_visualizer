@@ -1,6 +1,6 @@
 [
     {
-      "origin": ["https://localhost:8080"],
+      "origin": ["*"],
       "method": ["GET"],
       "responseHeader": ["Content-Type"],
       "maxAgeSeconds": 3600
