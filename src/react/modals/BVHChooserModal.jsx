@@ -1,6 +1,6 @@
 /**
  * @author Travis Bennett
- * @email 
+ * @email
  * @create date 2018-08-26 08:36:36
  * @modify date 2018-08-26 08:36:36
  * @desc [Modal overlay to select or upload bvh files to client.]
@@ -236,8 +236,15 @@ export class BasicBVHChooserModal extends React.Component {
   }
 
   loadDefault() {
+    let windowUrl = window.location.search;
+    let params = new URLSearchParams(windowUrl);
+    // console.log(windowUrl);
+    console.log(params.get("name"));
+    let bvhUrl = params.get("name");
     this.setState(prevState => ({
-      file: "https://metagen.storage.googleapis.com/generated/stelar.bvh",
+      // file: "https://metagen.storage.googleapis.com/generated/stelar.bvh",
+      // file: "https://drive.google.com/file/d/1iOw6uO8kVbhJqsJyarbMAhrnCrqiRxHA/view?usp=sharing",
+      file: "https://metagendance.storage.googleapis.com/"+bvhUrl+".bvh",
       filetype: 'url',
       selected: [0],
     }), () => {
