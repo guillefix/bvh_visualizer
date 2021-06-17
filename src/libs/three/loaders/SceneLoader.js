@@ -320,6 +320,8 @@ THREE.SceneLoader.prototype = {
               camera = new THREE.OrthographicCamera(objJSON.left, objJSON.right, objJSON.top, objJSON.bottom, objJSON.near, objJSON.far);
             }
 
+            // console.log("OH KAMERAAA")
+
             camera.name = objID;
             camera.position.fromArray(pos);
 

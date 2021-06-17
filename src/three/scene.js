@@ -1,6 +1,6 @@
 /**
  * @author Travis Bennett
- * @email 
+ * @email
  * @create date 2018-08-31 08:32:12
  * @modify date 2018-08-31 08:32:12
  * @desc [Main threejs scene]
@@ -150,7 +150,7 @@ class Scene {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     this.renderer.domElement.id = "threeCanvas";
-    
+
 
     // / Global : this.scene
     this.scene = new THREE.Scene();
@@ -159,10 +159,11 @@ class Scene {
     // / Global : this.camera
     this.camera = new THREE.PerspectiveCamera(20, this.w / this.h, 0.01, 10000);
     window.camera = this.camera;
-    this.camera.position.set(0, 1.5000000041026476, 19.999990045581438);
+    // this.camera.position.set(0, 1.5000000041026476, 19.999990045581438);
+    this.camera.position.set(0, 2.4, 15);
     this.scene.add(this.camera);
 
-    this.addCreateCommon(); 
+    this.addCreateCommon();
 
     // this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
     // this.controls.target = new THREE.Vector3(0,1.5,0);
@@ -185,10 +186,10 @@ class Scene {
 		this.controls.enableZoom = true;
 		this.controls.enableRotate = true;
 		this.controls.enablePan = true;
-		
+
 		this.controls.autoRotate = false;
 		this.controls.autoRotateSpeed = 1.5;
-		
+
 		this.controls.enableKeys = false;
 
     this.cameraControl = new CameraControl(this.scene, this.camera, this.controls);
@@ -211,7 +212,7 @@ class Scene {
     customContainer.appendChild(this.gui.domElement);
 
     this.gui.open();
-    
+
     let ARFolder = this.gui.addFolder('AR');
 
     ARFolder.add(this.params, 'numPlanes').name('Planes Detected').listen();
@@ -236,7 +237,7 @@ class Scene {
 
     this.clock = new THREE.Clock();
 
-    
+
     if (this.debug.stats) {
       this.stats = new Stats();
       this.stats.dom.id = 'stats';
@@ -246,9 +247,9 @@ class Scene {
     // attach renderer to DOM
     // must appear before controls or mouse events won't work
     this.container.append(this.renderer.domElement);
-    
+
     this.scene.add(this.sceneGroup);
-    
+
     this.environments = new Environments(this.renderer, this.sceneGroup, this.performers, this.defaults);
     // window.environments = this.environments;
 
@@ -356,7 +357,7 @@ class Scene {
     if (this.renderStyles) {
       this.renderStyles.update(this.clock.getDelta());
       if (this.renderStyles.currentRenderStyle === 'normal') {
-        this.renderer.render(this.scene, this.camera); 
+        this.renderer.render(this.scene, this.camera);
       } else {
         if (this.composer) { this.composer.render(); }
       }
@@ -371,7 +372,7 @@ class Scene {
       this.h = this.container.height();
     }
 
-    if (this.camera) { 
+    if (this.camera) {
       this.camera.aspect = this.w / this.h;
       this.camera.updateProjectionMatrix();
     }
