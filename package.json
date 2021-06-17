@@ -13,7 +13,7 @@
     "dev": "npm run webpack | npm run data",
     "frontend": "npm run webpack",
     "test": "mocha",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build; gh-pages -d dist"
   },
   "repository": {
     "type": "git",

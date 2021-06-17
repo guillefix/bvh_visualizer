@@ -308,8 +308,16 @@ h5 {
 }
 
 .BVHUploadButton {
-	background: #79b9ff;	
+	background: #4aff74;
+	color: black;
+	weight:bold;
 }
+
+.BVHUploadTitle {
+	color: black;
+	weight:bold;
+}
+
 
 #loadBVHRow {
 	border-top: 1px solid #FFF;
@@ -342,7 +350,7 @@ h5 {
   text-align: center;
 }
 
-@media screen and (min-width: 768px) { 
+@media screen and (min-width: 768px) {
   .modal:before {
     display: inline-block;
     vertical-align: middle;

@@ -254,23 +254,30 @@ export class BasicBVHChooserModal extends React.Component {
 
   render() {
     return (
-      <Modal backdrop={(this.props.performers.length < 1) ? true : true} show={this.props.show} onHide={this.props.closeBVHChooser}>
+      <Modal aria-labelledby="contained-modal-title-vcenter" show={this.props.show} onHide={this.props.closeBVHChooser} centered>
         <Modal.Header
-          closeButton={(this.props.performers.length < 1) ? true : true}
-          className="chooserHeader">
-          <Modal.Title>
-            <span>Welcome to</span>
-            <div className="modal-image">
-              <img alt="OP Logo" height="100%" width="auto" src={'images/op_logo_lockup.png'} />
-            </div>
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <Modal.Title className={"BVHUploadTitle"}>
+            <span>Click the button below</span>
+            {/*<div className="modal-image">*/}
+            {/*  <img alt="OP Logo" height="100%" width="auto" src={'images/op_logo_lockup.png'} />*/}
+            {/*</div>*/}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Footer>
+        <Modal.Footer
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
           <Button
             className={"BVHUploadButton"}
             // title={(this.state.file === null) ? 'Please Select File' : 'Click to Load Default File'}
             onClick={this.loadDefault.bind(this)}
-            bsStyle="primary"
+            // bsStyle="primary"
           >
             Load File
           </Button>
